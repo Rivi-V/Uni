@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Профиль пользователя -->
+            <div class="card mb-4 shadow-sm border-0 bg-dark text-white">
+                <div class="row g-0 align-items-center">
+                    <!-- Аватар -->
+                    <div class="col-md-3 text-center p-3">
+                        <img src="{{ url_for('avatar', number=user.avatar) }}" alt="Аватар"
+                            class="rounded-circle img-fluid border border-success"
+                            style="width: 100px; height: 100px; border-color: #00ff99;">
+                    </div>
+                    <!-- Информация о пользователе + Кнопки -->
+                    <div class="col-md-9 d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <h5 class="card-title mb-1">{{ user.username }}</h5>
+                                {% if user.about_me %}
+                                <p class="text-custom-white">{{ user.about_me }}</p>
+                                {% endif %}
+                                {% if user.last_seen %}
+                                <p class="text-custom-gray">Последний раз был в сети: {{
+                                    moment(user.last_seen).format('LLL') }}</p>
+                                {% endif %}
+                                <p class="text-custom-gray">
+                                    {{ user.followers_count() }} — подписчики,
+                                    {{ user.following_count() }} — подписки.
+                                </p>
+                            </div>
+                            <div>
+                                <!-- Кнопки управления подпиской -->
+                                {% if user == current_user %}
+                                <a href="{{ url_for('edit_profile') }}" class="btn btn-sm btn-outline-primary me-2"
+                                    style="color: #00ff99; border-color: #00ff99;">
+                                    Изменить профиль
+                                </a>
+                                {% elif not current_user.is_following(user) %}
+                                <form action="{{ url_for('follow', username=user.username) }}" method="post"
+                                    class="d-inline">
+                                    {{ form.hidden_tag() }}
+                                    {{ form.submit(class="btn btn-sm btn-outline-success", value='Подписаться') }}
+                                </form>
+                                {% else %}
+                                <form action="{{ url_for('unfollow', username=user.username) }}" method="post"
+                                    class="d-inline">
+                                    {{ form.hidden_tag() }}
+                                    {{ form.submit(class="btn btn-sm btn-outline-danger", value='Отписаться') }}
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Посты пользователя -->
+            {% for post in posts %}
+            <div class="card mb-3 border-0 bg-dark text-white">
+                <div class="card-body d-flex">
+                    <!-- Аватар -->
+                    <div class="me-3">
+                        <img src="{{ url_for('avatar', number=post.author.avatar) }}" alt="Аватар" class="rounded-circle"
+                            style="width: 64px; height: 64px; border: 2px solid #00ff99;">
+                    </div>
+                    <!-- Содержимое поста -->
+                    <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <h6 class="mb-0">{{ post.author.username }}</h6>
+                                <p class="text-custom-gray">{{ moment(post.timestamp).fromNow() }}</p>
+                            </div>
+                            <!-- Кнопка удаления справа -->
+                            {% if post.author.username == current_user.username %}
+                            <form
+                                action="{{ url_for('delete', username=current_user.username, post_id=post.id, time=post.timestamp) }}"
+                                method="post" class="ms-auto">
+                                {{ form.hidden_tag() }}
+                                {{ form.submit(class="btn btn-sm btn-link text-danger", value='Удалить') }}
+                            </form>
+                            {% endif %}
+                        </div>
+                        <p class="card-text small mb-2">{{ post.body }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <!-- Пагинация -->
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if prev_url %}
+                    <li class="page-item">
+                        <a class="page-link bg-dark text-white border-0" href="{{ prev_url }}" aria-label="Previous"
+                            style="color: #00ff99;">
+                            <span aria-hidden="true">&larr; Новые</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if next_url %}
+                    <li class="page-item">
+                        <a class="page-link bg-dark text-white border-0" href="{{ next_url }}" aria-label="Next"
+                            style="color: #00ff99;">
+                            <span aria-hidden="true">Старые &rarr;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+{% endblock %}

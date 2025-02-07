@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4" style="color: #00ff99;">Изменить профиль</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form action="" method="post" class="p-4 border rounded shadow-sm bg-black text-white">
+                {{ form.hidden_tag() }}
+
+                <!-- Поле username -->
+                <div class="mb-3">
+                    {{ form.username.label(class="form-label", style="color: #ffffff;") }}
+                    {{ form.username(class="form-control bg-dark text-white", size=32, style="border-color: #00ff99;") }}
+                    {% for error in form.username.errors %}
+                    <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <!-- Поле about_me -->
+                <div class="mb-3">
+                    {{ form.about_me.label(class="form-label", style="color: #ffffff;") }}
+                    {{ form.about_me(class="form-control bg-dark text-white", cols=50, rows=4, style="border-color: #00ff99;") }}
+                    {% for error in form.about_me.errors %}
+                    <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <!-- Блок с выбором аватара -->
+                <div class="mb-3">
+                    <label class="form-label" style="color: #ffffff;">Выберите аватар:</label>
+                    <div class="d-flex align-items-center">
+                        <!-- Превью текущего аватара -->
+                        <div class="me-3">
+                            <img src="{{ url_for('avatar', number=number) }}" alt="Аватар"
+                                class="rounded-circle img-fluid" style="width: 80px; height: 80px; border: 2px solid #00ff99;">
+                        </div>
+                        <!-- Кнопка выбора аватара -->
+                        <div>
+                            {{ form.avatar(class="btn btn-outline-success", style="border-color: #00ff99; color: #00ff99;") }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Кнопка отправки -->
+                <div class="d-grid">
+                    {{ form.submit(class="btn btn-success", style="background-color: #00ff99; border-color: #00ff99;") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

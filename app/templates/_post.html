@@ -1,0 +1,26 @@
+<div class="container mt-4">
+    <div class="card mb-3 shadow-sm bg-dark text-white">
+        <div class="row g-0">
+            <!-- Аватар -->
+            <div class="col-md-2 text-center align-self-start p-3">
+                <img src="{{ url_for('avatar', number=post.author.avatar) }}" alt="Аватар" 
+                     class="rounded-circle img-fluid border border-success" 
+                     style="width: 100px; height: 100px; border-color: #00ff99;">
+            </div>
+            <!-- Содержимое поста -->
+            <div class="col-md-10">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{{ url_for('user', username=post.author.username) }}" 
+                           class="text-decoration-none text-success">
+                            {{ post.author.username }}
+                        </a>
+                    </h5>
+                    <p class="text-custom-gray">{{ moment(post.timestamp).fromNow() }}</p>
+                    </p>
+                    <p class="card-text">{{ post.body }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

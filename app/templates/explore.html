@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- Форма поиска -->
+<form method="POST" action="" class="mb-4">
+    {{ form.hidden_tag() }}
+    <div class="input-group bg-dark rounded-pill overflow-hidden" style="max-width: 600px; margin: 0 auto;">
+        <!-- Поле ввода -->
+        {{ form.query(size=20, class="form-control bg-transparent text-white border-0", placeholder="Поиск
+        пользователей") }}
+        <!-- Кнопка отправки -->
+        {{ form.submit(class="btn btn-success border-0", style="background-color: #00ff99;") }}
+    </div>
+</form>
+
+<!-- Посты -->
+{% for post in posts %}
+{% include '_post.html' %}
+{% endfor %}
+
+<!-- Пагинация -->
+<nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if prev_url %}
+        <li class="page-item">
+            <a class="page-link bg-dark text-white border-0" href="{{ prev_url }}" aria-label="Previous"
+                style="color: #00ff99;">
+                <span aria-hidden="true">&larr; Новые</span>
+            </a>
+        </li>
+        {% endif %}
+        
+        {% if next_url %}
+        <li class="page-item">
+            <a class="page-link bg-dark text-white border-0" href="{{ next_url }}" aria-label="Next"
+                style="color: #00ff99;">
+                <span aria-hidden="true">Старые &rarr;</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}

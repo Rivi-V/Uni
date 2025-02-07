@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <!-- Форма входа -->
+            <div class="card p-4 border rounded shadow-sm bg-dark text-white">
+                <h1 class="text-center mb-4" style="color: #00ff99;">Войти в учётную запись</h1>
+                <form action="" method="post" novalidate>
+                    {{ form.hidden_tag() }}
+
+                    <!-- Поле username -->
+                    <div class="mb-3">
+                        {{ form.username.label(class="form-label", style="color: #ffffff;") }}
+                        {{ form.username(class="form-control bg-dark text-white", size=32, style="border-color:
+                        #00ff99;") }}
+                        {% for error in form.username.errors %}
+                        <div class="text-danger small" style="color: #ff5733;">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Поле password -->
+                    <div class="mb-3">
+                        {{ form.password.label(class="form-label", style="color: #ffffff;") }}
+                        {{ form.password(class="form-control bg-dark text-white", size=32, style="border-color:
+                        #00ff99;") }}
+                        {% for error in form.password.errors %}
+                        <div class="text-danger small" style="color: #ff5733;">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Чекбокс remember_me -->
+                    <div class="form-check mb-3">
+                        {{ form.remember_me(class="form-check-input", style="accent-color: #00ff99;") }} 
+                        {{ form.remember_me.label(class="form-check-label", style="color: #ffffff;") }}
+                    </div>
+
+                    <!-- Кнопка отправки -->
+                    <div class="d-grid">
+                        {{ form.submit(class="btn btn-success", style="background-color: #00ff99; border-color:
+                        #00ff99;") }}
+                    </div>
+                </form>
+
+                <!-- Ссылка на регистрацию -->
+                <p class="text-center mt-3" style="color: #aac8e9;">
+                    Новый пользователь?
+                    <a href="{{ url_for('register') }}" style="color: #00ff99; text-decoration: none;">
+                        Регистрация
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <!-- Заголовок ошибки -->
+            <h1 class="display-4 fw-bold" style="color: #ff5733;">Ошибка 500</h1>
+            <h2 class="display-5 fw-bold" style="color: #ffffff;">Произошла непредвиденная ошибка!</h2>
+            <p class="lead" style="color: #aac8e9;">Администратор был уведомлен. Приносим извинения за доставленные
+                неудобства!</p>
+
+            <!-- Кнопка возврата на главную страницу -->
+            <a href="{{ url_for('index') }}" class="btn btn-success mt-4"
+                style="background-color: #00ff99; border-color: #00ff99;">
+                Вернуться на главную
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
