@@ -30,11 +30,6 @@
             color: #ffffff;
         }
 
-        header h1 {
-            font-size: 2em;
-            margin: 0;
-        }
-
         header nav ul {
             display: flex;
             gap: 15px;
@@ -48,7 +43,7 @@
         }
 
         header nav ul li a:hover {
-            color: #00ff99;
+            color: #7d50b0ce;
         }
 
         /* Подвал */
@@ -66,8 +61,8 @@
 
         /* Формы */
         .form-control:focus {
-            box-shadow: 0 0 5px rgba(0, 255, 153, 0.5);
-            border-color: #00ff99;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0);
+            border-color: #7d50b0ce;
         }
 
         /* Пагинация */
@@ -77,12 +72,12 @@
 
         .pagination .page-link:hover {
             color: #ffffff !important;
-            background-color: #00ff99 !important;
+            background-color: #7d50b0ce !important;
         }
 
         .pagination .page-item.active .page-link {
-            background-color: #00ff99 !important;
-            border-color: #00ff99 !important;
+            background-color: #7d50b0ce !important;
+            border-color: #7d50b0ce !important;
         }
 
         /* Карточка поста */
@@ -96,8 +91,7 @@
         }
 
         .card .rounded-circle {
-            border: 2px solid #00ff99;
-            box-shadow: 0 0 10px rgba(0, 255, 153, 0.5);
+            box-shadow: 0 0 10px rgba(172, 39, 255, 0.668);
         }
 
         /* Ссылки */
@@ -107,7 +101,7 @@
         }
 
         .nav-link:hover {
-            color: #00ff99;
+            color: #7d50b0ce;
         }
         .text-custom-gray {
             color: #888888;
@@ -124,19 +118,23 @@
         .alert-custom {
             background: rgba(0, 0, 0, 0.8); /* Полупрозрачный чёрный фон */
             color: #ffffff; /* Белый текст */
-            border: 2px solid #00ff99; /* Зелёная рамка */
+            border: 2px solid #7d50b0ce;
             padding: 15px 20px; /* Отступы внутри */
             border-radius: 10px; /* Закруглённые углы */
             margin-bottom: 15px; /* Отступ между уведомлениями */
             transition: all 0.3s ease; /* Плавная анимация */
-            box-shadow: 0 0 10px rgba(0, 255, 153, 0.5); /* Неоновая подсветка */
+            box-shadow: 0 0 10px rgba(165, 21, 255, 0.805); /* Неоновая подсветка */
         }
 
         /* Эффект наведения */
         .alert-custom:hover {
             transform: scale(1.02); /* Немного увеличивается при наведении */
-            border-color: #00e676; /* Более светлый зелёный при наведении */
-}
+            border-color: #7d50b0ce; 
+        }
+        .custom-avatar-btn {
+        --bs-btn-hover-bg: #7d50b064; /* Фон при наведении */
+        --bs-btn-hover-border-color: #7d50b064; /* Цвет границы при наведении */
+        }
     </style>
     {% if title %}
     <title>{{ title }} - Uni</title>
@@ -149,21 +147,23 @@
     <!-- Шапка -->
     <header>
         <div class="container-fluid">
-            <h1>Uni</h1>
-            <nav>
-                <ul class="d-flex justify-content-end list-unstyled mb-0">
+            <nav class="d-flex justify-content-between align-items-center mb-3">
+                <!-- Аватар слева -->
+                <div class="me-3">
+                    {% if not current_user.is_anonymous %}
+                        <img src="{{ url_for('image', name='planet.png') }}" alt="Аватар" class="profile-pic" height="60">
+                    {% endif %}
+                </div>
+
+                <!-- Навигация справа -->
+                <ul class="d-flex list-unstyled mb-0">
                     {% if current_user.is_anonymous %}
                     <li><a href="{{ url_for('login') }}" class="nav-link">Войти</a></li>
                     {% else %}
-                    <li><a href="{{ url_for('logout') }}" class="nav-link">Выйти</a></li>
+                    <li></li><a href="{{ url_for('user', username=current_user.username) }}" class="nav-link"> Профиль</a></li>
                     <li><a href="{{ url_for('index') }}" class="nav-link">Стена</a></li>
                     <li><a href="{{ url_for('explore') }}" class="nav-link">Поиск</a></li>
-                    <li>
-                        <a href="{{ url_for('user', username=current_user.username) }}" class="nav-link">
-                            <img src="{{ url_for('image', name='planet.png') }}" alt="Аватар" class="profile-pic"
-                                width="60" height="60">
-                        </a>
-                    </li>
+                    <li><a href="{{ url_for('logout') }}" class="nav-link">Выйти</a></li>
                     {% endif %}
                 </ul>
             </nav>

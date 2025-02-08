@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container mt-5">
-    <h1 class="text-center mb-4" style="color: #00ff99;">Привет, {{ current_user.username }}!</h1>
+    <h1 class="text-center mb-4" style="color: #ffffffce;">Привет, {{ current_user.username }}!</h1>
 
     <!-- Форма для создания поста -->
     <div class="row justify-content-center">
@@ -11,10 +11,10 @@
                 <div class="mb-3">
                     {{ form.post.label(class="form-label", style="color: #ffffff;") }}
                     {{ form.post(class="form-control bg-dark text-white", cols=32, rows=4, style="border-color:
-                    #00ff99;") }}
+                    #7d50b0ce;") }}
                 </div>
                 <div class="d-grid">
-                    {{ form.submit(class="btn btn-success", style="background-color: #00ff99; border-color: #00ff99;")
+                    {{ form.submit(class="btn btn-success", style="background-color: #7d50b0ce; border-color: #7d50b0ce;")
                     }}
                 </div>
             </form>
@@ -29,11 +29,11 @@
                 <div class="mb-3">
                     {{ form_gbt.question.label(class="form-label", style="color: #ffffff;") }}
                     {{ form_gbt.question(class="form-control bg-dark text-white", cols=32, rows=4, style="border-color:
-                    #00ff99;") }}
+                    #7d50b0ce;") }}
                 </div>
                 <div class="d-grid">
-                    {{ form_gbt.submit(class="btn btn-success", style="background-color: #00ff99; border-color:
-                    #00ff99;") }}
+                    {{ form_gbt.submit(class="btn btn-success", style="background-color:#7d50b0ce; border-color:
+                    #7d50b0ce;") }}
                 </div>
             </form>
         </div>
@@ -50,7 +50,7 @@
             {% if prev_url %}
             <li class="page-item">
                 <a class="page-link bg-dark text-white border-0" href="{{ prev_url }}" aria-label="Previous"
-                    style="color: #00ff99;">
+                    style="color: #7d50b0ce;">
                     <span aria-hidden="true">&larr; Новые</span>
                 </a>
             </li>
@@ -58,7 +58,7 @@
             {% if next_url %}
             <li class="page-item">
                 <a class="page-link bg-dark text-white border-0" href="{{ next_url }}" aria-label="Next"
-                    style="color: #00ff99;">
+                    style="color: #7d50b0ce;">
                     <span aria-hidden="true">Старые &rarr;</span>
                 </a>
             </li>

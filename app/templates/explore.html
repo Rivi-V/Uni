@@ -1,14 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
+
 <!-- Форма поиска -->
+
 <form method="POST" action="" class="mb-4">
     {{ form.hidden_tag() }}
-    <div class="input-group bg-dark rounded-pill overflow-hidden" style="max-width: 600px; margin: 0 auto;">
+    <div class="input-group bg-dark rounded-pill overflow-clip" style="max-width: 600px; margin: 0 auto;">
         <!-- Поле ввода -->
         {{ form.query(size=20, class="form-control bg-transparent text-white border-0", placeholder="Поиск
-        пользователей") }}
+        пользователей",
+        style="height: 38px; padding: 0.375rem 0.75rem; font-size: 1rem; flex-shrink: 0; resize: none;") }}
         <!-- Кнопка отправки -->
-        {{ form.submit(class="btn btn-success border-0", style="background-color: #00ff99;") }}
+        {{ form.submit(class="btn btn-success border-0", style="background-color:#6c17cece;") }}
     </div>
 </form>
 
@@ -23,7 +26,7 @@
         {% if prev_url %}
         <li class="page-item">
             <a class="page-link bg-dark text-white border-0" href="{{ prev_url }}" aria-label="Previous"
-                style="color: #00ff99;">
+                style="color: #6c17cece;">
                 <span aria-hidden="true">&larr; Новые</span>
             </a>
         </li>
@@ -32,7 +35,7 @@
         {% if next_url %}
         <li class="page-item">
             <a class="page-link bg-dark text-white border-0" href="{{ next_url }}" aria-label="Next"
-                style="color: #00ff99;">
+                style="color: #6c17cece;">
                 <span aria-hidden="true">Старые &rarr;</span>
             </a>
         </li>

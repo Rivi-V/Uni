@@ -9,8 +9,8 @@
                     <!-- Аватар -->
                     <div class="col-md-3 text-center p-3">
                         <img src="{{ url_for('avatar', number=user.avatar) }}" alt="Аватар"
-                            class="rounded-circle img-fluid border border-success"
-                            style="width: 100px; height: 100px; border-color: #00ff99;">
+                            class="rounded-circle"
+                            style="width: 100px; height: 100px;">
                     </div>
                     <!-- Информация о пользователе + Кнопки -->
                     <div class="col-md-9 d-flex flex-column">
@@ -32,21 +32,20 @@
                             <div>
                                 <!-- Кнопки управления подпиской -->
                                 {% if user == current_user %}
-                                <a href="{{ url_for('edit_profile') }}" class="btn btn-sm btn-outline-primary me-2"
-                                    style="color: #00ff99; border-color: #00ff99;">
+                                <a href="{{ url_for('edit_profile') }}" type="button" class="btn btn-sm btn-outline-primary me-3">
                                     Изменить профиль
                                 </a>
                                 {% elif not current_user.is_following(user) %}
                                 <form action="{{ url_for('follow', username=user.username) }}" method="post"
                                     class="d-inline">
                                     {{ form.hidden_tag() }}
-                                    {{ form.submit(class="btn btn-sm btn-outline-success", value='Подписаться') }}
+                                    {{ form.submit(class="btn btn-sm btn-outline-success me-3", value='Подписаться') }}
                                 </form>
                                 {% else %}
                                 <form action="{{ url_for('unfollow', username=user.username) }}" method="post"
                                     class="d-inline">
                                     {{ form.hidden_tag() }}
-                                    {{ form.submit(class="btn btn-sm btn-outline-danger", value='Отписаться') }}
+                                    {{ form.submit(class="btn btn-sm btn-outline-danger me-3", value='Отписаться') }}
                                 </form>
                                 {% endif %}
                             </div>
@@ -62,7 +61,7 @@
                     <!-- Аватар -->
                     <div class="me-3">
                         <img src="{{ url_for('avatar', number=post.author.avatar) }}" alt="Аватар" class="rounded-circle"
-                            style="width: 64px; height: 64px; border: 2px solid #00ff99;">
+                            style="width: 64px; height: 64px;">
                     </div>
                     <!-- Содержимое поста -->
                     <div class="flex-grow-1">
@@ -93,7 +92,7 @@
                     {% if prev_url %}
                     <li class="page-item">
                         <a class="page-link bg-dark text-white border-0" href="{{ prev_url }}" aria-label="Previous"
-                            style="color: #00ff99;">
+                            style="color: #7d50b0ce;">
                             <span aria-hidden="true">&larr; Новые</span>
                         </a>
                     </li>
@@ -101,7 +100,7 @@
                     {% if next_url %}
                     <li class="page-item">
                         <a class="page-link bg-dark text-white border-0" href="{{ next_url }}" aria-label="Next"
-                            style="color: #00ff99;">
+                            style="color: #7d50b0ce;">
                             <span aria-hidden="true">Старые &rarr;</span>
                         </a>
                     </li>

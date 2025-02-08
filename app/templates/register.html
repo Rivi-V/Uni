@@ -5,7 +5,7 @@
         <div class="col-md-6">
             <!-- Форма регистрации -->
             <div class="card p-4 border rounded shadow-sm bg-dark text-white">
-                <h1 class="text-center mb-4" style="color: #00ff99;">Регистрация</h1>
+                <h1 class="text-center mb-4" style="color: #7d50b0ce;">Регистрация</h1>
                 <form action="" method="post" novalidate>
                     {{ form.hidden_tag() }}
 
@@ -13,7 +13,7 @@
                     <div class="mb-3">
                         {{ form.username.label(class="form-label", style="color: #ffffff;") }}
                         {{ form.username(class="form-control bg-dark text-white", size=32, style="border-color:
-                        #00ff99;") }}
+                        #7d50b0ce;") }}
                         {% for error in form.username.errors %}
                         <div class="text-danger small" style="color: #ff5733;">{{ error }}</div>
                         {% endfor %}
@@ -22,7 +22,7 @@
                     <!-- Поле email -->
                     <div class="mb-3">
                         {{ form.email.label(class="form-label", style="color: #ffffff;") }}
-                        {{ form.email(class="form-control bg-dark text-white", size=64, style="border-color: #00ff99;")
+                        {{ form.email(class="form-control bg-dark text-white", size=64, style="border-color: #7d50b0ce;")
                         }}
                         {% for error in form.email.errors %}
                         <div class="text-danger small" style="color: #ff5733;">{{ error }}</div>
@@ -33,7 +33,7 @@
                     <div class="mb-3">
                         {{ form.password.label(class="form-label", style="color: #ffffff;") }}
                         {{ form.password(class="form-control bg-dark text-white", size=32, style="border-color:
-                        #00ff99;") }}
+                        #7d50b0ce;") }}
                         {% for error in form.password.errors %}
                         <div class="text-danger small" style="color: #ff5733;">{{ error }}</div>
                         {% endfor %}
@@ -43,7 +43,7 @@
                     <div class="mb-3">
                         {{ form.password2.label(class="form-label", style="color: #ffffff;") }}
                         {{ form.password2(class="form-control bg-dark text-white", size=32, style="border-color:
-                        #00ff99;") }}
+                        #7d50b0ce;") }}
                         {% for error in form.password2.errors %}
                         <div class="text-danger small" style="color: #ff5733;">{{ error }}</div>
                         {% endfor %}
@@ -51,15 +51,15 @@
 
                     <!-- Кнопка отправки -->
                     <div class="d-grid">
-                        {{ form.submit(class="btn btn-success", style="background-color: #00ff99; border-color:
-                        #00ff99;") }}
+                        {{ form.submit(class="btn btn-success", style="background-color: #7d50b0ce; border-color:
+                        #7d50b0ce;") }}
                     </div>
                 </form>
 
                 <!-- Ссылка на вход -->
                 <p class="text-center mt-3" style="color: #aac8e9;">
                     Уже зарегистрированы?
-                    <a href="{{ url_for('login') }}" style="color: #00ff99; text-decoration: none;">
+                    <a href="{{ url_for('login') }}" style="color: #7d50b0ce; text-decoration: none;">
                         Войти
                     </a>
                 </p>
@@ -68,4 +68,4 @@
     </div>
 </div>
 {{ form.hidden_tag() }}
-{% endblock %}
+{% endblock %} 

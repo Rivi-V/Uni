@@ -25,6 +25,14 @@ followers = sa.Table( # ассоциативная таблица многие �
               primary_key=True)
 )
 
+class Role(db.Model):
+    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    name: so.Mapped[str] = so.mapped_column(sa.String(64), unique=True, nullable=False)
+    description: so.Mapped[Optional[str]] = so.mapped_column(sa.String(255))
+
+    def __repr__(self):
+        return f'<Role {self.name}>'
+
 class User(UserMixin, db.Model):
   id: so.Mapped[int] = so.mapped_column(primary_key=True)
   username: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, unique=True)
@@ -32,6 +40,8 @@ class User(UserMixin, db.Model):
   password_hash: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
   about_me: so.Mapped[Optional[str]] = so.mapped_column(sa.String(140))
   avatar: so.Mapped[str] = so.mapped_column(sa.String(3), default=lambda: str(randint(1, 5))) 
+  role: so.Mapped[Optional[str]] = so.mapped_column(sa.String(120))
+   
   last_seen: so.Mapped[Optional[datetime]] = so.mapped_column(
         default=lambda: datetime.now(timezone.utc))
 
@@ -47,6 +57,10 @@ class User(UserMixin, db.Model):
         primaryjoin=(followers.c.followed_id == id), # на пользователя подписан -> подписчик
         secondaryjoin=(followers.c.follower_id == id),
         back_populates='following')
+
+  def has_role(self, role_name: str) -> bool:
+        """Проверяет, имеет ли пользователь указанную роль."""
+        return any(role.name == role_name for role in self.roles)
   
   def __repr__(self):
         return '<User {}>'.format(self.username)
