@@ -25,13 +25,6 @@ followers = sa.Table( # ассоциативная таблица многие �
               primary_key=True)
 )
 
-class Role(db.Model):
-    id: so.Mapped[int] = so.mapped_column(primary_key=True)
-    name: so.Mapped[str] = so.mapped_column(sa.String(64), unique=True, nullable=False)
-    description: so.Mapped[Optional[str]] = so.mapped_column(sa.String(255))
-
-    def __repr__(self):
-        return f'<Role {self.name}>'
 
 class User(UserMixin, db.Model):
   id: so.Mapped[int] = so.mapped_column(primary_key=True)
