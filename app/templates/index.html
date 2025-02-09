@@ -11,7 +11,7 @@
                 <div class="mb-3">
                     {{ form.post.label(class="form-label", style="color: #ffffff;") }}
                     {{ form.post(class="form-control bg-dark text-white", cols=32, rows=4, style="border-color:
-                    #7d50b0ce;") }}
+                    #7d50b0ce;") |escape }}
                 </div>
                 <div class="d-grid">
                     {{ form.submit(class="btn btn-success", style="background-color: #7d50b0ce; border-color: #7d50b0ce;")
@@ -29,7 +29,7 @@
                 <div class="mb-3">
                     {{ form_gbt.question.label(class="form-label", style="color: #ffffff;") }}
                     {{ form_gbt.question(class="form-control bg-dark text-white", cols=32, rows=4, style="border-color:
-                    #7d50b0ce;") }}
+                    #7d50b0ce;") |escape }}
                 </div>
                 <div class="d-grid">
                     {{ form_gbt.submit(class="btn btn-success", style="background-color:#7d50b0ce; border-color:

@@ -8,11 +8,14 @@ import sqlalchemy as sa
 
 from app import app, db
 from app.forms import LoginForm, RegistrationForm,  EditProfileForm, EmptyForm, PostForm, GBTForm, Search
-from app.models import User, Post
+from app.models import User, Post, followers
 
 from datetime import datetime, timezone
 
 from g4f.client import Client
+
+import markdown
+from bleach import clean
 
 number = 0
 
@@ -94,7 +97,7 @@ def index():
     form_gbt = GBTForm()
 
     if form.validate_on_submit():
-        post = Post(body=form.post.data, author=current_user)
+        post = Post(body=markdown.markdown(form.post.data), author=current_user)
         db.session.add(post)
         db.session.commit()
         flash('Твой пост опубликован!')
@@ -111,19 +114,18 @@ def index():
     if form_gbt.validate_on_submit():
         question = form_gbt.question.data
         flash('Твой вопрос отправлен!')
-        try:
-            client = Client()
-            response = client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[{"role": "user", "content": question}],
-                web_search=False,
-                use_chat_history=False
-            )
-            generated_text = response.choices[0].message.content.strip()
-
+        client = Client()
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": question + "В ответе не используй # и формулы, формотирование"}],
+            web_search=False,
+            use_chat_history=False
+        )
+        generated_text = response.choices[0].message.content.strip()  
+        if "<!DOCTYPE HTML" in generated_text:
+            form.post.data = "Ошибка! Непредвиденный HTML тэг."
+        else: 
             form.post.data = generated_text
-        except Exception as e:
-            form_gbt.post.data = "Ошибочка"
 
     return render_template(
         'index.html',
@@ -243,7 +245,6 @@ def delete(username, post_id, time):
         db.session.delete(post_to_delete)
         db.session.commit()
 
-        flash(f'Вы удалили пост: {post_to_delete.body}.')
         return redirect(url_for('user', username=username))
     
     return redirect(url_for('index'))
@@ -262,3 +263,4 @@ def avatar(number):
 @app.route('/image/<name>')
 def image(name):
     return send_from_directory(app.config['UPLOAD_FOLDER'], name)
+

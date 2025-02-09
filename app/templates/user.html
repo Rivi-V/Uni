@@ -16,7 +16,8 @@
                     <div class="col-md-9 d-flex flex-column">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <div>
-                                <h5 class="card-title mb-1">{{ user.username }}</h5>
+                                <div class="ps-3 ps-sm-4 ps-md-5"></div>
+                                <h5 class="card-title mt-3">{{ user.username }}</h5>
                                 {% if user.about_me %}
                                 <p class="text-custom-white">{{ user.about_me }}</p>
                                 {% endif %}
@@ -31,16 +32,30 @@
                             </div>
                             <div>
                                 <!-- Кнопки управления подпиской -->
-                                {% if user == current_user %}
-                                <a href="{{ url_for('edit_profile') }}" type="button" class="btn btn-sm btn-outline-primary me-3">
-                                    Изменить профиль
-                                </a>
+                                {% if user == current_user%}
+                                    <div class="d-flex flex-column align-items-end">
+                                        <a href="{{ url_for('edit_profile') }}" type="button" class="btn btn-sm btn-outline-primary me-3">
+                                            Изменить профиль
+                                        </a>
+                                    </div>
                                 {% elif not current_user.is_following(user) %}
-                                <form action="{{ url_for('follow', username=user.username) }}" method="post"
-                                    class="d-inline">
-                                    {{ form.hidden_tag() }}
-                                    {{ form.submit(class="btn btn-sm btn-outline-success me-3", value='Подписаться') }}
-                                </form>
+                                    <div class="d-flex flex-column align-items-end">
+                                        <form action="{{ url_for('follow', username=user.username) }}" method="post"
+                                            class="d-inline">
+                                            {{ form.hidden_tag() }}
+                                            {{ form.submit(class="btn btn-sm btn-outline-success me-3", value='Подписаться') }}
+                                        </form>
+                                    </div>
+                                {% elif current_user.role == "Admin"%}
+                                    <div class="d-flex flex-column align-items-end">
+                                        <a href="{{ url_for('edit_profile') }}" type="button" class="btn btn-sm btn-outline-primary" style="margin: 10px">
+                                            Изменить профиль
+                                        </a>
+                                        <form action="{{ url_for('follow', username=user.username) }}" method="post" class="d-inline">
+                                            {{ form.hidden_tag() }}
+                                            {{ form.submit(class="btn btn-sm btn-outline-success", value='Подписаться', style="margin: 10px") }}
+                                        </form>
+                                    </div>
                                 {% else %}
                                 <form action="{{ url_for('unfollow', username=user.username) }}" method="post"
                                     class="d-inline">
@@ -71,7 +86,7 @@
                                 <p class="text-custom-gray">{{ moment(post.timestamp).fromNow() }}</p>
                             </div>
                             <!-- Кнопка удаления справа -->
-                            {% if post.author.username == current_user.username %}
+                            {% if post.author.username == current_user.username or current_user.role == "Admin" %}
                             <form
                                 action="{{ url_for('delete', username=current_user.username, post_id=post.id, time=post.timestamp) }}"
                                 method="post" class="ms-auto">
@@ -80,7 +95,7 @@
                             </form>
                             {% endif %}
                         </div>
-                        <p class="card-text small mb-2">{{ post.body }}</p>
+                        <p class="card-text small mb-2">{{ post.body | safe }}</p>
                     </div>
                 </div>
             </div>
