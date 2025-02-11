@@ -15,6 +15,7 @@ from app import login
 
 from random import randint
 
+from sqlalchemy import select
 
 followers = sa.Table( # ассоциативная таблица многие ко многим
     'followers', # имя таблицы
@@ -52,7 +53,7 @@ class User(UserMixin, db.Model):
         back_populates='following')
 
   def has_role(self, role_name: str) -> bool:
-        """Проверяет, имеет ли пользователь указанную роль."""
+        # Проверяет, имеет ли пользователь указанную роль.
         return any(role.name == role_name for role in self.roles)
   
   def __repr__(self):
@@ -101,6 +102,21 @@ class User(UserMixin, db.Model):
             .group_by(Post) # Группируем результаты по постам (для избежания дубликатов)
             .order_by(Post.timestamp.desc()) # Сортируем посты по времени создания (новые сначала)
         )
+        
+  def all_followers(self):
+       # Подзапрос для получения ID подписчиков
+       follower_ids = select(followers.c.follower_id).where(
+           followers.c.followed_id == self.id  # Мы ищем тех, кто подписан на текущего пользователя
+       )
+       # Основной запрос для получения пользователей по их ID
+       return select(User).where(User.id.in_(follower_ids))
+  
+  def all_followed(self):
+       followed_ids = select(followers.c.followed_id).where(
+           followers.c.follower_id == self.id  # Мы ищем тех, кто подписан на текущего пользователя
+       )
+       # Основной запрос для получения пользователей по их ID
+       return select(User).where(User.id.in_(followed_ids))
 
 
 class Post(db.Model):

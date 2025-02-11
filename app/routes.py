@@ -66,27 +66,28 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/edit_profile', methods=['GET', 'POST'])
+@app.route('/edit_profile/<username>', methods=['GET', 'POST'])
 @login_required
-def edit_profile():
-    form = EditProfileForm(current_user.username)
+def edit_profile(username):
+    user = db.first_or_404(sa.select(User).where(User.username == username))
+    form = EditProfileForm(user.username)
     global number
     if form.validate_on_submit():
         if form.submit.data:
-            current_user.username = form.username.data
-            current_user.about_me = form.about_me.data
-            current_user.avatar = str(number + int(current_user.avatar))
+            user.username = form.username.data
+            user.about_me = form.about_me.data
+            user.avatar = str(number + int(user.avatar))
             db.session.commit()
             number = 0
             flash('Изменения сохранены.')
             return redirect(url_for('edit_profile'))
         if form.avatar.data:  
-            number = number + 1 if (number + int(current_user.avatar)) < 5 else -1 * int(current_user.avatar) + 1
+            number = number + 1 if (number + int(user.avatar)) < 5 else -1 * int(user.avatar) + 1
     elif request.method == 'GET':
-        form.username.data = current_user.username # чтобы в форме были данные, которые у вас сейчас в бд
-        form.about_me.data = current_user.about_me
+        form.username.data = user.username # чтобы в форме были данные, которые у вас сейчас в бд
+        form.about_me.data = user.about_me
     return render_template('edit_profile.html', title='Изменить профиль',
-                           form=form, number=number+int(current_user.avatar))
+                           form=form, number=number+int(user.avatar))
 
  
 @app.route('/', methods=['GET', 'POST'])
@@ -136,6 +137,63 @@ def index():
         prev_url=prev_url,
         form_gbt=form_gbt
     )
+
+
+@app.route('/followers/<username>', methods=['GET', 'POST'])
+@login_required
+def followers(username):
+    page = request.args.get('page', 1, type=int)
+    
+    # Получаем запрос на подписчиков
+    query = current_user.all_followers()
+
+    all_followers = db.paginate(
+        query,
+        page=page,
+        per_page=app.config['POSTS_PER_PAGE'],
+        error_out=False
+    )
+
+    next_url = url_for('followers', username=username, page=all_followers.next_num) \
+        if all_followers.has_next else None
+    prev_url = url_for('followers', username=username, page=all_followers.prev_num) \
+        if all_followers.has_prev else None
+
+    return render_template(
+        'followers.html',
+        title='Стена',
+        followers=all_followers.items,
+        next_url=next_url,
+        prev_url=prev_url,
+    )
+
+@app.route('/followed/<username>', methods=['GET', 'POST'])
+@login_required
+def followed(username):
+    page = request.args.get('page', 1, type=int)
+    query = current_user.all_followed()
+
+    # Применяем пагинацию
+    all_followed = db.paginate(
+        query,
+        page=page,
+        per_page=app.config['POSTS_PER_PAGE'],
+        error_out=False
+    )
+
+    next_url = url_for('followers', username=username, page=all_followed.next_num) \
+        if all_followed.has_next else None
+    prev_url = url_for('followers', username=username, page=all_followed.prev_num) \
+        if all_followed.has_prev else None
+
+    return render_template(
+        'followers.html',
+        title='Стена',
+        followers=all_followed.items,
+        next_url=next_url,
+        prev_url=prev_url,
+    )
+
 
 @app.route('/user/<username>') # динамический компонент URL <>
 @login_required

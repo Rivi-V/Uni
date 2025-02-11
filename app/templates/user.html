@@ -26,42 +26,56 @@
                                     moment(user.last_seen).format('LLL') }}</p>
                                 {% endif %}
                                 <p class="text-custom-gray">
-                                    {{ user.followers_count() }} — подписчики,
-                                    {{ user.following_count() }} — подписки.
+                                    {{ user.followers_count() }} — 
+                                    <a href="{{ url_for('followers', username=user.username)  }}">
+                                        подписчики</a>,
+                                    {{ user.following_count() }} — 
+                                    <a href="{{ url_for('followed', username=user.username)  }}">
+                                        подписки</a>.
                                 </p>
                             </div>
                             <div>
                                 <!-- Кнопки управления подпиской -->
-                                {% if user == current_user%}
+                                {% if current_user.role == "Admin" and current_user.id != user.id%}
+                                <div class="d-flex flex-column align-items-end">
+                                    <a href="{{ url_for('edit_profile', username=user.username) }}" type="button" class="btn btn-sm btn-outline-primary" style="margin: 10px">
+                                        Изменить профиль
+                                    </a>
+                                    {% if not current_user.is_following(user) %}
                                     <div class="d-flex flex-column align-items-end">
-                                        <a href="{{ url_for('edit_profile') }}" type="button" class="btn btn-sm btn-outline-primary me-3">
-                                            Изменить профиль
-                                        </a>
-                                    </div>
-                                {% elif not current_user.is_following(user) %}
-                                    <div class="d-flex flex-column align-items-end">
-                                        <form action="{{ url_for('follow', username=user.username) }}" method="post"
-                                            class="d-inline">
+                                        <form action="{{ url_for('follow', username=user.username) }}" method="post" class="d-inline">
                                             {{ form.hidden_tag() }}
                                             {{ form.submit(class="btn btn-sm btn-outline-success me-3", value='Подписаться') }}
                                         </form>
                                     </div>
-                                {% elif current_user.role == "Admin"%}
-                                    <div class="d-flex flex-column align-items-end">
-                                        <a href="{{ url_for('edit_profile') }}" type="button" class="btn btn-sm btn-outline-primary" style="margin: 10px">
-                                            Изменить профиль
-                                        </a>
-                                        <form action="{{ url_for('follow', username=user.username) }}" method="post" class="d-inline">
-                                            {{ form.hidden_tag() }}
-                                            {{ form.submit(class="btn btn-sm btn-outline-success", value='Подписаться', style="margin: 10px") }}
-                                        </form>
-                                    </div>
+                                    {% else %}
+                                    <form action="{{ url_for('unfollow', username=user.username) }}" method="post" class="d-inline">
+                                        {{ form.hidden_tag() }}
+                                        {{ form.submit(class="btn btn-sm btn-outline-danger me-3", value='Отписаться') }}
+                                    </form>
+                                    {% endif %}
+                                </div>
                                 {% else %}
-                                <form action="{{ url_for('unfollow', username=user.username) }}" method="post"
-                                    class="d-inline">
-                                    {{ form.hidden_tag() }}
-                                    {{ form.submit(class="btn btn-sm btn-outline-danger me-3", value='Отписаться') }}
-                                </form>
+                                    {% if user == current_user%}
+                                        <div class="d-flex flex-column align-items-end">
+                                            <a href="{{ url_for('edit_profile', username=user.username) }}" type="button" class="btn btn-sm btn-outline-primary me-3">
+                                                Изменить профиль
+                                            </a>
+                                        </div>
+                                    {% elif not current_user.is_following(user) %}
+                                        <div class="d-flex flex-column align-items-end">
+                                            <form action="{{ url_for('follow', username=user.username) }}" method="post"
+                                                class="d-inline">
+                                                {{ form.hidden_tag() }}
+                                                {{ form.submit(class="btn btn-sm btn-outline-success me-3", value='Подписаться') }}
+                                            </form>
+                                        </div>
+                                    {% else %}
+                                    <form action="{{ url_for('unfollow', username=user.username) }}" method="post" class="d-inline">
+                                        {{ form.hidden_tag() }}
+                                        {{ form.submit(class="btn btn-sm btn-outline-danger me-3", value='Отписаться') }}
+                                    </form>
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         </div>

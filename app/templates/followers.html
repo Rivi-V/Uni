@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% for follower in followers %}
+    <div class="container mt-4">
+        <div class="card mb-3 shadow-sm bg-dark text-white">
+            <div class="row g-0">
+                <!-- Аватар -->
+                <div class="col-md-2 text-center align-self-start p-3">
+                    <img src="{{ url_for('avatar', number=follower.avatar) }}" alt="Аватар" class="rounded-circle"
+                        style="width: 100px; height: 100px;">
+                </div>
+                <!-- Содержимое поста -->
+                <div class="col-md-10">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{{ url_for('user', username=follower.username) }}" class="text-decoration-none"
+                                style="color: #7d50b0ce;">
+                                {{ follower.username }}
+                            </a>
+                            {%if follower.last_seen %}<p class="text-custom-gray">{{ moment(follower.last_seen).fromNow() }}</p>{% endif %}
+                            {%if follower.about_me %}<p class="card-text">{{ follower.about_me | safe }}</p>{% endif %}
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+<!-- Пагинация -->
+<nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if prev_url %}
+        <li class="page-item">
+            <a class="page-link bg-dark text-white border-0" href="{{ prev_url }}" aria-label="Previous"
+                style="color: #7d50b0ce;">
+                <span aria-hidden="true">&larr; Новые</span>
+            </a>
+        </li>
+        {% endif %}
+        {% if next_url %}
+        <li class="page-item">
+            <a class="page-link bg-dark text-white border-0" href="{{ next_url }}" aria-label="Next"
+                style="color: #7d50b0ce;">
+                <span aria-hidden="true">Старые &rarr;</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+
+{% endblock %}
